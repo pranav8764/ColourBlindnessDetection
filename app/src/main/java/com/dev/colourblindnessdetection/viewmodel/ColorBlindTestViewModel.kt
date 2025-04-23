@@ -78,9 +78,20 @@ class ColorBlindTestViewModel(application: Application) : AndroidViewModel(appli
         // Move to the next question or complete the test
         if (_currentQuestionIndex.value < _questions.value.size - 1) {
             _currentQuestionIndex.update { it + 1 }
-            _currentQuestion.value = _questions.value[_currentQuestionIndex.value]
+            updateCurrentQuestion()
         } else {
             completeTest()
+        }
+    }
+
+    /**
+     * Updates the current question based on the current index.
+     * This should be called after changing the current index.
+     */
+    fun updateCurrentQuestion() {
+        val index = _currentQuestionIndex.value
+        if (index >= 0 && index < _questions.value.size) {
+            _currentQuestion.value = _questions.value[index]
         }
     }
 
@@ -100,6 +111,6 @@ class ColorBlindTestViewModel(application: Application) : AndroidViewModel(appli
         _responses.value = mutableListOf()
         _isTestComplete.value = false
         _testResult.value = null
-        _currentQuestion.value = _questions.value.firstOrNull()
+        updateCurrentQuestion()
     }
 }

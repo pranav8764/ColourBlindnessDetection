@@ -2,6 +2,7 @@ package com.dev.colourblindnessdetection.ui.screens
 
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -399,6 +400,103 @@ fun ResultScreen(
                     }
                 }
                 
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                // Educational Resources Section
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(
+                            text = "Educational Resources",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        Text(
+                            text = "Learn more about your results and possible solutions:",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        
+                        Spacer(modifier = Modifier.height(12.dp))
+                        
+                        // Display links based on the color blindness type
+                        when (result.colorBlindnessType) {
+                            ColorBlindnessType.PROTANOPIA -> {
+                                ResourceLinkItem(
+                                    title = "Understanding Protanopia (Red-Green Color Blindness)",
+                                    url = "https://www.aao.org/eye-health/diseases/what-is-color-blindness"
+                                )
+                                ResourceLinkItem(
+                                    title = "Protanopia: Correction Options and Assistive Technology",
+                                    url = "https://www.allaboutvision.com/conditions/color-blindness/"
+                                )
+                                ResourceLinkItem(
+                                    title = "Living with Red-Green Color Blindness",
+                                    url = "https://nei.nih.gov/learn-about-eye-health/eye-conditions-and-diseases/color-blindness"
+                                )
+                            }
+                            ColorBlindnessType.DEUTERANOPIA -> {
+                                ResourceLinkItem(
+                                    title = "Understanding Deuteranopia (Red-Green Color Blindness)",
+                                    url = "https://www.aao.org/eye-health/diseases/what-is-color-blindness"
+                                )
+                                ResourceLinkItem(
+                                    title = "Deuteranopia: Correction Options and Assistive Technology",
+                                    url = "https://www.allaboutvision.com/conditions/color-blindness/"
+                                )
+                                ResourceLinkItem(
+                                    title = "Living with Red-Green Color Blindness",
+                                    url = "https://www.color-blindness.com/living-with-color-vision-deficiency/"
+                                )
+                            }
+                            ColorBlindnessType.TRITANOPIA -> {
+                                ResourceLinkItem(
+                                    title = "Understanding Tritanopia (Blue-Yellow Color Blindness)",
+                                    url = "https://www.aao.org/eye-health/diseases/what-is-color-blindness"
+                                )
+                                ResourceLinkItem(
+                                    title = "Tritanopia: Rare Blue-Yellow Color Blindness",
+                                    url = "https://www.color-blindness.com/tritanopia-blue-yellow-color-blindness/"
+                                )
+                                ResourceLinkItem(
+                                    title = "Treatment Options for Blue-Yellow Color Blindness",
+                                    url = "https://www.allaboutvision.com/conditions/color-blindness/"
+                                )
+                            }
+                            ColorBlindnessType.NORMAL -> {
+                                ResourceLinkItem(
+                                    title = "Understanding Color Vision and Eye Health",
+                                    url = "https://www.aao.org/eye-health/tips-prevention/eye-health-101"
+                                )
+                                ResourceLinkItem(
+                                    title = "Maintaining Healthy Color Vision",
+                                    url = "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision"
+                                )
+                            }
+                            ColorBlindnessType.INCONCLUSIVE -> {
+                                ResourceLinkItem(
+                                    title = "Types of Color Blindness",
+                                    url = "https://www.aao.org/eye-health/diseases/what-is-color-blindness"
+                                )
+                                ResourceLinkItem(
+                                    title = "When to See an Eye Doctor for Color Vision Testing",
+                                    url = "https://www.allaboutvision.com/eye-exam/eye-tests/"
+                                )
+                                ResourceLinkItem(
+                                    title = "Professional Color Vision Testing Options",
+                                    url = "https://www.color-blindness.com/color-blindness-tests/"
+                                )
+                            }
+                        }
+                    }
+                }
+                
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 // Disclaimer
@@ -430,6 +528,41 @@ fun ResultScreen(
                     Text(text = "Take Test")
                 }
             }
+        }
+    }
+}
+
+/**
+ * Component that displays a clickable link to an educational resource.
+ */
+@Composable
+private fun ResourceLinkItem(title: String, url: String) {
+    val context = LocalContext.current
+    val urlIntent = remember { Intent(Intent.ACTION_VIEW, Uri.parse(url)) }
+    
+    OutlinedButton(
+        onClick = { context.startActivity(urlIntent) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+            
+            Text(
+                text = "Tap to open",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

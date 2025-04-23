@@ -128,11 +128,11 @@ class TestRepository(private val context: Context) {
                 id = 10,
                 imageResPath = "Screenshot 2025-04-21 210443.png", // Number 16
                 questionText = "What number do you see in this image?",
-                options = listOf("Nothing", "6", "16", "26"), // Jumbled
-                correctAnswer = "16",
+                options = listOf("Nothing", "5", "16", "26"), // Jumbled
+                correctAnswer = "5",
                 protanopiaAnswer = "Nothing",
                 deuteranopiaAnswer = "Nothing",
-                tritanopiaAnswer = "16"
+                tritanopiaAnswer = "5"
             )
         )
     }

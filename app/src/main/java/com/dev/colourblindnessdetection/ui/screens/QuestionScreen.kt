@@ -51,12 +51,17 @@ import java.io.File
  */
 @Composable
 fun QuestionScreen(
-    question: ColorBlindTestQuestion?,
-    onAnswerSelected: (String) -> Unit
+    onAnswerSelected: (String) -> Unit,
+    viewModel: ColorBlindTestViewModel = viewModel()
 ) {
-    val viewModel: ColorBlindTestViewModel = viewModel()
+    // ViewModel is now passed as a parameter
     val currentQuestionIndex by viewModel.currentQuestionIndex.collectAsState()
     val questions by viewModel.questions.collectAsState()
+    val currentQuestionFromViewModel by viewModel.currentQuestion.collectAsState()
+    
+    // Use the currentQuestion from viewModel which is guaranteed to be updated
+    val displayQuestion = currentQuestionFromViewModel
+    
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     
@@ -67,7 +72,7 @@ fun QuestionScreen(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        question?.let { currentQuestion ->
+        displayQuestion?.let { currentQuestion ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -112,7 +117,7 @@ fun QuestionScreen(
                     var loadError by remember { mutableStateOf(false) }
                     var isRecovering by remember { mutableStateOf(false) }
                     
-                    LaunchedEffect(currentQuestion.imageResPath) {
+                    LaunchedEffect(currentQuestion.imageResPath, currentQuestionIndex) {
                         try {
                             // Use the repository to load the image
                             bitmap = repository.getImageBitmap(currentQuestion.imageResPath)

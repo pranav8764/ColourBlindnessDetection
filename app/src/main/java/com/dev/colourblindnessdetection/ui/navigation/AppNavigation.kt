@@ -51,7 +51,6 @@ fun AppNavigation(navController: NavHostController) {
         }
         
         composable(AppScreen.Question.name) {
-            val currentQuestion by viewModel.currentQuestion.collectAsState()
             val isTestComplete by viewModel.isTestComplete.collectAsState()
             
             // If the test is complete, navigate to the result screen
@@ -62,10 +61,10 @@ fun AppNavigation(navController: NavHostController) {
             }
             
             QuestionScreen(
-                question = currentQuestion,
                 onAnswerSelected = { answer ->
                     viewModel.answerQuestion(answer)
-                }
+                },
+                viewModel = viewModel
             )
         }
         
